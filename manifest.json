@@ -1,7 +1,7 @@
 {
     "name": "Gerador de Senhas",
     "short_name": "PASS SIMPLES SENHAS",
-    "description": "Gerador de senhas aleatórias.",
+    "description": "Gerador de senhas aleatórias",
     "start_url": "index.html",
     "display": "standalone",
     "background_color": "#ffffff",
