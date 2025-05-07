@@ -1,27 +1,29 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Detecta o idioma do navegador e define na tag <html> -->
+  <script>
+    const userLang = navigator.language || navigator.userLanguage || 'pt-BR';
+    document.documentElement.lang = userLang;
+    localStorage.setItem('userLang', userLang);
+
+    // Registra o Service Worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(reg => console.log('Service Worker registrado', reg))
+        .catch(err => console.log('Erro ao registrar Service Worker', err));
+    }
+  </script>
+
   <link rel="stylesheet" type="text/css" href="styles.css">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#6200ea">
   <title>Gerador de Senhas Aleatórias</title>
 </head>
-<script>
-  if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js')
-          .then(reg => console.log('Service Worker registrado', reg))
-          .catch(err => console.log('Erro ao registrar Service Worker', err));
-  }
-  
-  // Detecta o idioma do navegador
-  const userLang = navigator.language || navigator.userLanguage;
 
-  // Salva a linguagem em localStorage para usar no script principal
-  localStorage.setItem('userLang', userLang);
-
-</script>
 <body>
   <header>
     <img src="Imagem/LOGO_PASS_SIMPLES_2.png" alt="Logo Pass Simples" id="logo">

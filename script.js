@@ -301,32 +301,64 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-const lang = localStorage.getItem('userLang') || 'en';
+// Detecta o idioma do navegador
+const lang = (localStorage.getItem('userLang') || navigator.language || 'pt-BR').toLowerCase();
 
 // Textos em múltiplos idiomas
 const traducoes = {
-  'pt-BR': {
-    titulo: 'Gerador de Senha Simples',
-    gerar: 'Gerar nova senha',
-    copiar: 'Copiar',
-    // Adicione outras traduções aqui
-  },
-  'en-US': {
-    titulo: 'Simple Password Generator',
-    gerar: 'Generate New Password',
-    copiar: 'Copy',
-    // Adicione outras traduções aqui
-  }
+    'pt-br': {
+        titulo: 'PASS SIMPLES',
+        subtitulo: 'Gerador de Senhas Aleatórias',
+        descricao: 'Crie senhas fortes e seguras.',
+        gerar: 'GERAR',
+        voltar: 'voltar senha',
+        copiar: 'Copiar',
+        baixar: 'Baixar Senha',
+        viaWhatsapp: 'Baixar via',
+        whatsapp: 'WhatsApp',
+        personalize: 'PERSONALIZE SUA SENHA',
+    },
+    'en-us': {
+        titulo: 'SIMPLE PASS',
+        subtitulo: 'Random Password Generator',
+        descricao: 'Create strong and secure passwords.',
+        gerar: 'GENERATE',
+        voltar: 'Previous password',
+        copiar: 'Copy',
+        baixar: 'Download Password',
+        viaWhatsapp: 'Download via',
+        whatsapp: 'WhatsApp',
+        personalize: 'CUSTOMIZE YOUR PASSWORD',
+    }
 };
 
-// Função para aplicar as traduções
-function aplicarIdioma() {
-  const t = traducoes[lang] || traducoes['en-US'];
-  document.querySelector('header h1').textContent = t.titulo;
-  document.getElementById('nova-senha').textContent = t.gerar;
-  document.getElementById('copiar').textContent = t.copiar;
-  // Adicione os demais elementos aqui
+function traduzirInterface() {
+    const t = traducoes[lang] || traducoes['pt-br'];
+    const $ = (id) => document.getElementById(id);
+
+    const header = document.querySelector('header h1');
+    if (header) header.textContent = t.titulo;
+
+    const h2 = document.querySelector('#gerador h2');
+    if (h2) h2.textContent = t.subtitulo;
+
+    const descricao = document.querySelector('#gerador p');
+    if (descricao) descricao.textContent = t.descricao;
+
+    if ($('nova-senha')) $('nova-senha').textContent = t.gerar;
+    if ($('voltar-senha')) $('voltar-senha').textContent = t.voltar;
+    if ($('copiar')) $('copiar').textContent = t.copiar;
+    if ($('baixar-senha')) $('baixar-senha').textContent = t.baixar;
+
+    const via = document.querySelector('#whatsapp p:first-child');
+    const what = document.querySelector('#whatsapp p span');
+    if (via) via.textContent = t.viaWhatsapp;
+    if (what) what.textContent = t.whatsapp;
+
+    const personalize = document.querySelector('#personalizar h3');
+    if (personalize) personalize.textContent = t.personalize;
 }
 
-document.addEventListener('DOMContentLoaded', aplicarIdioma);
+document.addEventListener('DOMContentLoaded', traduzirInterface);
+
 
