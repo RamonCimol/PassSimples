@@ -300,11 +300,9 @@ document.addEventListener('DOMContentLoaded', () => {
         codigoGerado = "";
     }
 });
+// Traduções com base na linguagem
+const lang = (localStorage.getItem('userLang') || 'pt-br').toLowerCase();
 
-// Detecta o idioma do navegador
-const lang = (localStorage.getItem('userLang') || navigator.language || 'pt-BR').toLowerCase();
-
-// Textos em múltiplos idiomas
 const traducoes = {
     'pt-br': {
         titulo: 'PASS SIMPLES',
@@ -317,6 +315,12 @@ const traducoes = {
         viaWhatsapp: 'Baixar via',
         whatsapp: 'WhatsApp',
         personalize: 'PERSONALIZE SUA SENHA',
+        caracteres: 'Número de caracteres da senha:',
+        letrasMaiusculas: 'Letra Maiúscula (ABC...)',
+        letrasMinusculas: 'Letra Minúscula (abc...)',
+        numeros: 'Números (1234567890)',
+        simbolos: 'Símbolos / Caracteres (!@#$%&*_|+-?)',
+        palavraChave: 'Conter Palavra Familiar:'
     },
     'en-us': {
         titulo: 'SIMPLE PASS',
@@ -329,6 +333,12 @@ const traducoes = {
         viaWhatsapp: 'Download via',
         whatsapp: 'WhatsApp',
         personalize: 'CUSTOMIZE YOUR PASSWORD',
+        caracteres: 'Number of password characters:',
+        letrasMaiusculas: 'Uppercase Letter (ABC...)',
+        letrasMinusculas: 'Lowercase Letter (abc...)',
+        numeros: 'Numbers (1234567890)',
+        simbolos: 'Symbols / Characters (!@#$%&*_|+-?)',
+        palavraChave: 'Include Familiar Word:'
     }
 };
 
@@ -336,14 +346,9 @@ function traduzirInterface() {
     const t = traducoes[lang] || traducoes['pt-br'];
     const $ = (id) => document.getElementById(id);
 
-    const header = document.querySelector('header h1');
-    if (header) header.textContent = t.titulo;
-
-    const h2 = document.querySelector('#gerador h2');
-    if (h2) h2.textContent = t.subtitulo;
-
-    const descricao = document.querySelector('#gerador p');
-    if (descricao) descricao.textContent = t.descricao;
+    document.querySelector('header h1').textContent = t.titulo;
+    document.querySelector('#gerador h2').textContent = t.subtitulo;
+    document.querySelector('#gerador p').textContent = t.descricao;
 
     if ($('nova-senha')) $('nova-senha').textContent = t.gerar;
     if ($('voltar-senha')) $('voltar-senha').textContent = t.voltar;
@@ -357,8 +362,25 @@ function traduzirInterface() {
 
     const personalize = document.querySelector('#personalizar h3');
     if (personalize) personalize.textContent = t.personalize;
+
+    const labelChars = document.querySelector('#personalizar h4');
+    if (labelChars) labelChars.childNodes[0].textContent = t.caracteres + ' ';
+
+    const checkboxes = document.querySelectorAll('#personalizar h5 label');
+    if (checkboxes.length >= 4) {
+        checkboxes[0].innerHTML = `<input type="checkbox" id="maiúsculas" checked> ${t.letrasMaiusculas}`;
+        checkboxes[1].innerHTML = `<input type="checkbox" id="minúsculas" checked> ${t.letrasMinusculas}`;
+        checkboxes[2].innerHTML = `<input type="checkbox" id="números" checked> ${t.numeros}`;
+        checkboxes[3].innerHTML = `<input type="checkbox" id="símbolos" checked> ${t.simbolos}`;
+    }
+
+    // Palavra-chave
+    if (checkboxes[4]) {
+        checkboxes[4].innerHTML = `
+            <input type="checkbox" id="palavra-chave"> ${t.palavraChave}
+            <input type="text" id="palavra" placeholder="Digite sua palavra-chave">
+        `;
+    }
 }
 
 document.addEventListener('DOMContentLoaded', traduzirInterface);
-
-

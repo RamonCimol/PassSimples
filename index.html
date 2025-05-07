@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Detecta o idioma do navegador e define na tag <html> -->
+   <!-- Detecta o idioma do navegador e define na tag <html> -->
   <script>
-    const userLang = navigator.language || navigator.userLanguage || 'pt-BR';
+    const userLang = (navigator.language || navigator.userLanguage || 'pt-BR').toLowerCase();
     document.documentElement.lang = userLang;
     localStorage.setItem('userLang', userLang);
 
