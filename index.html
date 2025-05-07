@@ -14,6 +14,13 @@
           .then(reg => console.log('Service Worker registrado', reg))
           .catch(err => console.log('Erro ao registrar Service Worker', err));
   }
+  
+  // Detecta o idioma do navegador
+  const userLang = navigator.language || navigator.userLanguage;
+
+  // Salva a linguagem em localStorage para usar no script principal
+  localStorage.setItem('userLang', userLang);
+
 </script>
 <body>
   <header>

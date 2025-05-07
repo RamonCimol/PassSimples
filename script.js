@@ -300,3 +300,33 @@ document.addEventListener('DOMContentLoaded', () => {
         codigoGerado = "";
     }
 });
+
+const lang = localStorage.getItem('userLang') || 'en';
+
+// Textos em múltiplos idiomas
+const traducoes = {
+  'pt-BR': {
+    titulo: 'Gerador de Senha Simples',
+    gerar: 'Gerar nova senha',
+    copiar: 'Copiar',
+    // Adicione outras traduções aqui
+  },
+  'en-US': {
+    titulo: 'Simple Password Generator',
+    gerar: 'Generate New Password',
+    copiar: 'Copy',
+    // Adicione outras traduções aqui
+  }
+};
+
+// Função para aplicar as traduções
+function aplicarIdioma() {
+  const t = traducoes[lang] || traducoes['en-US'];
+  document.querySelector('header h1').textContent = t.titulo;
+  document.getElementById('nova-senha').textContent = t.gerar;
+  document.getElementById('copiar').textContent = t.copiar;
+  // Adicione os demais elementos aqui
+}
+
+document.addEventListener('DOMContentLoaded', aplicarIdioma);
+
