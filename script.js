@@ -300,6 +300,8 @@ document.addEventListener('DOMContentLoaded', () => {
         codigoGerado = "";
     }
 });
+
+
 // Traduções com base na linguagem
 const lang = (localStorage.getItem('userLang') || 'pt-br').toLowerCase();
 
@@ -374,7 +376,6 @@ function traduzirInterface() {
         checkboxes[3].innerHTML = `<input type="checkbox" id="símbolos" checked> ${t.simbolos}`;
     }
 
-    // Palavra-chave
     if (checkboxes[4]) {
         checkboxes[4].innerHTML = `
             <input type="checkbox" id="palavra-chave"> ${t.palavraChave}
