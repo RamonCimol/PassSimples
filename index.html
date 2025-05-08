@@ -4,14 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script>
-    const userLang = (navigator.language || navigator.userLanguage || 'pt-BR').toLowerCase();
+    // Enhanced language detection
+    const browserLang = (navigator.language || navigator.userLanguage || 'pt-br').toLowerCase();
+    const userLang = browserLang.startsWith('en') ? 'en-us' : 'pt-br';
+    
     document.documentElement.lang = userLang;
     localStorage.setItem('userLang', userLang);
 
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('service-worker.js')
-        .then(reg => console.log('Service Worker registrado', reg))
-        .catch(err => console.log('Erro ao registrar Service Worker', err));
+        .then(reg => console.log('Service Worker registered', reg))
+        .catch(err => console.log('Service Worker registration failed', err));
     }
   </script>
   <link rel="stylesheet" href="styles.css">

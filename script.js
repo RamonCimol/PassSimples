@@ -301,11 +301,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-
-// Traduções com base na linguagem
-const lang = (localStorage.getItem('userLang') || 'pt-br').toLowerCase();
-
-const traducoes = {
+const translations = {
     'pt-br': {
         titulo: 'PASS SIMPLES',
         subtitulo: 'Gerador de Senhas Aleatórias',
@@ -322,7 +318,15 @@ const traducoes = {
         letrasMinusculas: 'Letra Minúscula (abc...)',
         numeros: 'Números (1234567890)',
         simbolos: 'Símbolos / Caracteres (!@#$%&*_|+-?)',
-        palavraChave: 'Conter Palavra Familiar:'
+        palavraChave: 'Conter Palavra Familiar:',
+        saibaMais: 'SAIBA MAIS <br> GOV',
+        caracteristicas: 'Quais as características de uma senha forte?',
+        longa: 'Longa',
+        complexa: 'Complexa',
+        exclusiva: 'Exclusiva',
+        entreEmContato: 'ENTRE EM CONTATO:',
+        direitos: '&copy; 2025 PASS SIMPLES. Todos os direitos reservados.',
+        placeholderPalavra: 'Digite sua palavra-chave'
     },
     'en-us': {
         titulo: 'SIMPLE PASS',
@@ -340,48 +344,89 @@ const traducoes = {
         letrasMinusculas: 'Lowercase Letter (abc...)',
         numeros: 'Numbers (1234567890)',
         simbolos: 'Symbols / Characters (!@#$%&*_|+-?)',
-        palavraChave: 'Include Familiar Word:'
+        palavraChave: 'Include Familiar Word:',
+        saibaMais: 'LEARN MORE <br> GOV',
+        caracteristicas: 'What makes a strong password?',
+        longa: 'Long',
+        complexa: 'Complex',
+        exclusiva: 'Unique',
+        entreEmContato: 'CONTACT US:',
+        direitos: '&copy; 2025 SIMPLE PASS. All rights reserved.',
+        placeholderPalavra: 'Type your keyword'
     }
 };
 
-function traduzirInterface() {
-    const t = traducoes[lang] || traducoes['pt-br'];
-    const $ = (id) => document.getElementById(id);
+function applyTranslations() {
+    const savedLang = localStorage.getItem('userLang');
+    const browserLang = (navigator.language || 'pt-br').toLowerCase();
+    const lang = savedLang || (browserLang.startsWith('en') ? 'en-us' : 'pt-br');
+    const t = translations[lang] || translations['pt-br'];
 
-    document.querySelector('header h1').textContent = t.titulo;
-    document.querySelector('#gerador h2').textContent = t.subtitulo;
-    document.querySelector('#gerador p').textContent = t.descricao;
+    // Update page title
+    document.title = t.subtitulo;
 
-    if ($('nova-senha')) $('nova-senha').textContent = t.gerar;
-    if ($('voltar-senha')) $('voltar-senha').textContent = t.voltar;
-    if ($('copiar')) $('copiar').textContent = t.copiar;
-    if ($('baixar-senha')) $('baixar-senha').textContent = t.baixar;
+    // Text elements
+    const elementsToTranslate = {
+        // Header
+        'header h1': t.titulo,
+        'nav a': t.saibaMais,
+        
+        // Main section
+        '#gerador h2': t.subtitulo,
+        '#gerador p': t.descricao,
+        
+        // Buttons
+        '#nova-senha': t.gerar,
+        '#voltar-senha': t.voltar,
+        '#copiar': t.copiar,
+        '#baixar-senha': t.baixar,
+        
+        // WhatsApp
+        '#whatsapp p:first-child': t.viaWhatsapp,
+        '#whatsapp p span': t.whatsapp,
+        
+        // Customization
+        '#personalizar h3': t.personalize,
+        '#personalizar h4': `${t.caracteres} <span id="valor-tamanho">12</span>`,
+        
+        // Features
+        '#caracteristicas h2': t.caracteristicas,
+        
+        // Footer
+        '.contato h1': t.entreEmContato,
+        'footer p:last-child': t.direitos
+    };
 
-    const via = document.querySelector('#whatsapp p:first-child');
-    const what = document.querySelector('#whatsapp p span');
-    if (via) via.textContent = t.viaWhatsapp;
-    if (what) what.textContent = t.whatsapp;
+    // Apply all text translations
+    Object.entries(elementsToTranslate).forEach(([selector, text]) => {
+        const element = document.querySelector(selector);
+        if (element) element.innerHTML = text;
+    });
 
-    const personalize = document.querySelector('#personalizar h3');
-    if (personalize) personalize.textContent = t.personalize;
+    // Feature items
+    const features = [t.longa, t.complexa, t.exclusiva];
+    document.querySelectorAll('#caracteristicas article h3').forEach((h3, i) => {
+        h3.textContent = features[i];
+    });
 
-    const labelChars = document.querySelector('#personalizar h4');
-    if (labelChars) labelChars.childNodes[0].textContent = t.caracteres + ' ';
+    // Checkboxes with preserved state
+    const checkboxes = [
+        t.letrasMaiusculas,
+        t.letrasMinusculas,
+        t.numeros,
+        t.simbolos,
+        `${t.palavraChave} <input type="text" id="palavra" placeholder="${t.placeholderPalavra}">`
+    ];
 
-    const checkboxes = document.querySelectorAll('#personalizar h5 label');
-    if (checkboxes.length >= 4) {
-        checkboxes[0].innerHTML = `<input type="checkbox" id="maiúsculas" checked> ${t.letrasMaiusculas}`;
-        checkboxes[1].innerHTML = `<input type="checkbox" id="minúsculas" checked> ${t.letrasMinusculas}`;
-        checkboxes[2].innerHTML = `<input type="checkbox" id="números" checked> ${t.numeros}`;
-        checkboxes[3].innerHTML = `<input type="checkbox" id="símbolos" checked> ${t.simbolos}`;
-    }
-
-    if (checkboxes[4]) {
-        checkboxes[4].innerHTML = `
-            <input type="checkbox" id="palavra-chave"> ${t.palavraChave}
-            <input type="text" id="palavra" placeholder="Digite sua palavra-chave">
-        `;
-    }
+    document.querySelectorAll('#personalizar h5 label').forEach((label, i) => {
+        if (i < 4) {
+            const isChecked = label.querySelector('input')?.checked || true;
+            label.innerHTML = `<input type="checkbox" id="${['maiúsculas', 'minúsculas', 'números', 'símbolos'][i]}" ${isChecked ? 'checked' : ''}> ${checkboxes[i]}`;
+        } else if (i === 4) {
+            label.innerHTML = `<input type="checkbox" id="palavra-chave"> ${checkboxes[4]}`;
+        }
+    });
 }
 
-document.addEventListener('DOMContentLoaded', traduzirInterface);
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', applyTranslations);
