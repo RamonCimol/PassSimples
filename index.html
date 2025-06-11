@@ -1,28 +1,20 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script>
-    // Enhanced language detection
-    const browserLang = (navigator.language || navigator.userLanguage || 'pt-br').toLowerCase();
-    const userLang = browserLang.startsWith('en') ? 'en-us' : 'pt-br';
-    
-    document.documentElement.lang = userLang;
-    localStorage.setItem('userLang', userLang);
-
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js')
-        .then(reg => console.log('Service Worker registered', reg))
-        .catch(err => console.log('Service Worker registration failed', err));
-    }
-  </script>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" type="text/css" href="styles.css">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#6200ea">
   <title>Gerador de Senhas Aleatórias</title>
 </head>
-
+<script>
+  if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+          .then(reg => console.log('Service Worker registrado', reg))
+          .catch(err => console.log('Erro ao registrar Service Worker', err));
+  }
+</script>
 <body>
   <header>
     <img src="Imagem/LOGO_PASS_SIMPLES_2.png" alt="Logo Pass Simples" id="logo">
@@ -147,7 +139,9 @@
         </p>
       </div>
     </div>
-   
+
+    <p>&copy; 2025 PASS SIMPLES. Todos os direitos reservados.</p>
+    
   </footer>
   <script src="script.js"></script>
 </body>
